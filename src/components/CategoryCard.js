@@ -1,4 +1,5 @@
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { urlFor } from "../../sanity";
 
 const CategoryCard = ({ data }) => {
   return (
@@ -7,16 +8,13 @@ const CategoryCard = ({ data }) => {
       showsHorizontalScrollIndicator={false}
       style={styles.mainWrapper}
     >
-      {[...Array(6)].map((itm) => (
-        <View style={styles.container}>
+      {data?.map((itm) => (
+        <View style={styles.container} key={itm?._id}>
           <Image
-            src={
-              data?.imageUrl ||
-              `https://i.pinimg.com/564x/cb/b8/81/cbb881f543f7ee0baa71cf98b0b8f381.jpg`
-            }
+            source={{ uri: urlFor(itm?.image).url() }}
             style={styles.imageStyle}
           />
-          <Text style={styles.textStyle}>{`Pizza`}</Text>
+          <Text style={styles.textStyle}>{itm?.name}</Text>
         </View>
       ))}
     </ScrollView>
@@ -26,7 +24,7 @@ const CategoryCard = ({ data }) => {
 export default CategoryCard;
 
 const styles = StyleSheet.create({
-  mainWrapper: { paddingVertical: 4 },
+  mainWrapper: { paddingVe: 4, flex: 1 },
   container: {
     position: "relative",
     padding: 4,

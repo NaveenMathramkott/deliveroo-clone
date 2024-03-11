@@ -1,21 +1,37 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome, Ionicons } from "./Icons";
+import { textShorter } from "../utils/functions";
+import { useNavigation } from "@react-navigation/native";
+import { urlFor } from "../../sanity";
 
-const RestaurantCard = ({ name, imageUrl, rating, type, address, onClick }) => {
+const RestaurantCard = ({ data }) => {
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity style={styles.mainWrapper} onPress={onClick}>
-      <Image src={imageUrl} alt={name} style={styles.imageStyle} />
+    <TouchableOpacity
+      style={styles.mainWrapper}
+      onPress={() =>
+        navigation.navigate("restaurantDetailScreen", {
+          data,
+        })
+      }
+    >
+      <Image
+        source={{ uri: urlFor(data?.image).url() }}
+        alt={data?.name}
+        style={styles.imageStyle}
+      />
       <View style={styles.padding}>
-        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.title}>{data?.name}</Text>
         <View style={styles.detailSec}>
           <FontAwesome name="star" size={14} color="#00CCBB" />
-          <Text style={styles.typo}>{rating}</Text>
-          <Text style={styles.typo}>{type}</Text>
+          <Text style={styles.typo}>{data?.rating} -</Text>
+          <Text style={styles.typo}>{data?._type}</Text>
         </View>
         <View style={styles.detailSec}>
           <Ionicons name="location-outline" size={14} color="#00CCBB" />
           <Text style={styles.typo}>Nearby</Text>
-          <Text style={styles.typo}>{address}</Text>
+          <Text style={styles.typo}>{textShorter(data?.address, 18)}</Text>
         </View>
       </View>
     </TouchableOpacity>
